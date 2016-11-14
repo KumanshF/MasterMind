@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Guess the combination!</title>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+		<link href="style.css" rel="stylesheet" type="text/css">
+		<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+		<script src="checkGuess.js"></script> 
+		<script>
+			var value1;
+			var value2;
+			var value3;
+			var value4;
+
+			var currentRound=1;
+			var fieldDisable=2;//disable fields that are not in use
+			var guessAmount=12;//How many rounds you have to guess
+			
+			//if empty (first time playing) set to easy.
+			if(!sessionStorage.getItem("difficulty")){
+				sessionStorage.setItem("difficulty", "normal");
+			}
+			//if empty set help off.
+			
+			//current difficulty
+			var difficulty=sessionStorage.getItem("difficulty");
+			//display help
+		</script>
+	</head>
+	<body class="mdl-color--grey-200">
+		<header>
+			<h2>Guess the correct combination I've hidden!</h2>
+			
+			<div id="aboutTheGame">
+				<h3>About the game</h3>
+					<p>The objective of the game is to correctly guess the set of four hidden numbers. They are randomly chosen for each game.<br>
+					The set may occasionally contain same numbers: 4-1-4-8 for example.<br>Once you guess the four numbers, press Answer button to check your guess.
+					You get hints only when you choose the correct number and/or when the correct number is in the correct position.</p>
+			</div>
+		</header>
+		<div id="container">
+		<div id="content" class="mdl-card mdl-shadow--6dp">
+			<div id="main" class="mdl-card__supporting-text"> 
+				<section>
+					<table>
+						<tr>
+							<th></th>
+							<th id="answer1">?</th>
+							<th id="answer2">?</th>
+							<th id="answer3">?</th>
+							<th id="answer4">?</th>
+						</tr>
+						<script>
+							var g=12;
+							var n=1;
+							for(var i=0;i<guessAmount;i++){
+								document.write("<tr id='round"+g+"'><td><b>"+g+".</b></td>");
+								for(var j=0;j<4;j++){
+									document.write("<td>\n<select id='g"+g+"n"+n+"'>\n");
+									for(var k=1;k<9;k++)
+									{
+										document.write("<option value="+k+">"+k+"</option>\n");
+									}
+									document.write("</select></td>\n");
+									n++;
+								}
+								n=1;
+								g--;
+								document.write("</tr>");
+							}
+						</script>
+					</table>
+				</section>
+			</div>
+			<div id="" class="mdl-card__actions mdl-card--border">
+				   	<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="resetButton" onclick="location.reload(true);"> Reset
+				   	</button>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="answerButton" onclick="checkGuess();">Answer
+					</button>
+			</div>
+		</div>
+		<div id="hints" class="mdl-card mdl-shadow--6dp">
+			<div class="mdl-card__supporting-text">
+				<section>
+					<h2>Hints</h2>
+					<b style="color:#00CC00;">Green:</b> Correct number and correct position<br><b style='color:#00CCFF;'>Blue:</b> Correct number<br><br>
+					<script>	
+						for(var l=12;l>0;l--)
+						{
+							if(l<10)
+							{
+								document.write("<b id='h"+l+"'>0"+l+".</b><br><br>");
+							}
+							else
+							{
+								document.write("<b id='h"+l+"'>"+l+".</b><br><br>");
+							}
+						}
+					</script>
+				</section>
+			</div>
+		</div>
+		
+			
+		<div id="result"></div>
+		</div>
+		<div id="buttons">
+		</div>
+		<script>
+			
+			//highlighting the first round
+			document.getElementById("round1").style.backgroundColor="#e0e0e0";
+
+		
+			value1=Math.floor((Math.random()*8)+1);
+			value2=Math.floor((Math.random()*8)+1);
+			value3=Math.floor((Math.random()*8)+1);
+			value4=Math.floor((Math.random()*8)+1);
+
+			while(fieldDisable<13){
+				document.getElementById("g"+fieldDisable+"n1").disabled=true;
+				document.getElementById("g"+fieldDisable+"n2").disabled=true;
+				document.getElementById("g"+fieldDisable+"n3").disabled=true;
+				document.getElementById("g"+fieldDisable+"n4").disabled=true;
+				
+				fieldDisable++;
+			}
+			
+			/*function changeDifficultyEasy(){
+				difficulty=sessionStorage.getItem("difficulty");
+				if("normal"==difficulty)
+				{
+					sessionStorage.setItem("difficulty", "easy");
+					location.reload(true);
+				}
+			}
+			*/
+			/*function changeDifficultyNormal(){
+				difficulty=sessionStorage.getItem("difficulty");
+				if("easy"==difficulty)
+				{
+					sessionStorage.setItem("difficulty", "normal");
+					location.reload(true);
+				}
+			}
+			function checkHelp(){
+				needHelp=sessionStorage.getItem("help");
+				if("no"==needHelp)
+				{
+					document.getElementById("aboutTheGame").innerHTML="<section id='help'>\n<h1>About the game</h1>\n<p>The objective of the game is to correctly guess the set of four hidden numbers. They are randomly chosen for each game.</p>\n<p>You proceed from the bottom up. The set may occasionally contain same numbers: 4-1-4-8 for example.</p>\n<p>You get hints either when you choose the correct number and/or when the correct number is in the correct position</p>\n</section>";
+					sessionStorage.setItem("help", "yes");
+					document.getElementById('helpButton').style.border="solid";
+				}
+				else
+				{
+					document.getElementById("aboutTheGame").innerHTML="";
+					sessionStorage.setItem("help", "no");
+					document.getElementById('helpButton').style="";
+				}
+			}*/
+		</script>
+	</body>
+</html>
